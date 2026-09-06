@@ -51,7 +51,7 @@ export function HeroSection() {
         alt=""
         fill
         priority
-        className="pointer-events-none absolute inset-0 -z-10 opacity-10 object-contain"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.06] dark:opacity-[0.03] object-contain mix-blend-screen"
       />
       <div className="mx-auto max-w-[1200px] px-4 py-20 md:py-32">
         <div className="flex flex-col items-center text-center">
