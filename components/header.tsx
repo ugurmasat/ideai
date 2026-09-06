@@ -22,7 +22,7 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-            <Image src="/favicon.svg" alt="IDEAI Logo" width={20} height={20} className="h-5 w-5" />
+            <Image src="/logo.png" alt="IDEAI Logo" width={20} height={20} className="h-5 w-5 object-contain" />
           </div>
           <span className="font-display text-xl font-bold tracking-tight">IDEAI</span>
         </Link>
