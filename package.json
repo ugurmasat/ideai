@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node .next/standalone/server.js",
+    "start": "sh start.sh",
     "lint": "eslint ."
   },
   "prisma": {
