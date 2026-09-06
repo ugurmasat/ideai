@@ -6,7 +6,8 @@ import { useSession, signOut } from 'next-auth/react'
 import { usePathname } from 'next/navigation'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
-import { Shield, Menu, X, LogOut, User, LayoutDashboard } from 'lucide-react'
+import { Menu, X, LogOut, User, LayoutDashboard } from 'lucide-react'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 
 export function Header() {
@@ -21,7 +22,7 @@ export function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-            <Shield className="h-5 w-5 text-primary-foreground" />
+            <Image src="/favicon.svg" alt="IDEAI Logo" width={20} height={20} className="h-5 w-5" />
           </div>
           <span className="font-display text-xl font-bold tracking-tight">IDEAI</span>
         </Link>

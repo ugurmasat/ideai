@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Shield } from 'lucide-react'
+import Image from 'next/image'
 
 export function Footer() {
   return (
@@ -7,7 +7,7 @@ export function Footer() {
       <div className="mx-auto max-w-[1200px] px-4 py-8 flex flex-col items-center gap-4 md:flex-row md:justify-between">
         <div className="flex items-center gap-2">
           <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary">
-            <Shield className="h-4 w-4 text-primary-foreground" />
+            <Image src="/favicon.svg" alt="IDEAI Logo" width={16} height={16} className="h-4 w-4" />
           </div>
           <span className="font-display text-sm font-semibold">IDEAI</span>
         </div>
