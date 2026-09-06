@@ -21,9 +21,7 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-[1200px] items-center justify-between px-4">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary">
-            <Image src="/logo.png" alt="IDEAI Logo" width={20} height={20} className="h-5 w-5 object-contain" />
-          </div>
+          <Image src="/logo.png" alt="IDEAI Logo" width={40} height={40} className="h-10 w-10 rounded-full object-contain" />
           <span className="font-display text-xl font-bold tracking-tight">IDEAI</span>
         </Link>
 
