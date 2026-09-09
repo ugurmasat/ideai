@@ -47,7 +47,7 @@ export function HeroSection() {
   return (
     <section className="relative overflow-hidden hero-gradient">
       <Image
-        src="/logo.png"
+        src="/logo.svg"
         alt=""
         fill
         priority

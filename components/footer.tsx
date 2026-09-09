@@ -6,7 +6,7 @@ export function Footer() {
     <footer className="border-t bg-card">
       <div className="mx-auto max-w-[1200px] px-4 py-8 flex flex-col items-center gap-4 md:flex-row md:justify-between">
         <div className="flex items-center gap-2">
-          <Image src="/logo.png" alt="IDEAI Logo" width={28} height={28} className="h-7 w-7 rounded-full object-contain" />
+          <Image src="/logo.svg" alt="IDEAI Logo" width={28} height={28} className="h-7 w-7 rounded-full object-contain" />
           <span className="font-display text-sm font-semibold">IDEAI</span>
         </div>
         <nav className="flex gap-6 text-sm text-muted-foreground">

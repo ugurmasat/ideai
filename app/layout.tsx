@@ -15,8 +15,8 @@ export const metadata = {
   title: 'IDEAI — Fikirle Parayı Buluştur',
   description: 'Fikir sahiplerini, yatırımcıları ve destek ekiplerini yapay zeka ile eşleştiren global platform.',
   icons: {
-    icon: '/logo.png',
-    shortcut: '/logo.png',
+    icon: '/logo.svg',
+    shortcut: '/logo.svg',
   },
   openGraph: {
     images: [{ url: '/og-image.png', width: 1200, height: 630 }],
