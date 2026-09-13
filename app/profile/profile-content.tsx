@@ -30,13 +30,27 @@ const SUB_ROLE_LABELS: Record<string, string> = {
   manufacturer: 'Üretici',
 }
 
+const STAGE_LABELS: Record<string, string> = {
+  idea: 'Fikir Aşaması',
+  mvp: 'MVP (Ürün Geliştiriliyor)',
+  early_revenue: 'İlk Gelir Elde Ediyor',
+}
+
+const CURRENCY_SYMBOLS: Record<string, string> = {
+  TRY: '₺',
+  USD: '$',
+  EUR: '€',
+}
+
 const PROFILE_FIELD_LABELS: Record<string, string> = {
   title: 'Fikir Başlığı',
   description: 'Açıklama',
   sector: 'Sektör',
-  capital: 'Sermaye (₺)',
+  stage: 'Proje Aşaması',
+  capital: 'Sermaye',
+  capitalCurrency: 'Para Birimi',
   weeklyHours: 'Haftalık Süre (saat)',
-  budget: 'Bütçe (₺)',
+  budget: 'Bütçe',
   interests: 'İlgi Alanları',
   riskLevel: 'Risk Seviyesi',
   country: 'Ülke',
@@ -44,6 +58,28 @@ const PROFILE_FIELD_LABELS: Record<string, string> = {
   expertise: 'Uzmanlık',
   workModel: 'Çalışma Modeli',
   experience: 'Deneyim (yıl)',
+}
+
+function formatCurrency(value: string, currency: string) {
+  const num = Number(value)
+  if (Number.isNaN(num)) return value || '-'
+  const symbol = CURRENCY_SYMBOLS[currency] ?? '₺'
+  return `${num.toLocaleString('tr-TR')} ${symbol}`
+}
+
+function formatValue(key: string, value: string, data: Record<string, string>) {
+  if (key === 'stage') return STAGE_LABELS[value] ?? value || '-'
+  if (key === 'capital') return formatCurrency(value, data?.capitalCurrency ?? 'TRY')
+  if (key === 'budget') return formatCurrency(value, data?.budgetCurrency ?? 'TRY')
+  if (key === 'riskLevel') {
+    const map: Record<string, string> = { low: 'Düşük Risk', medium: 'Orta Risk', high: 'Yüksek Risk' }
+    return map[value] ?? value || '-'
+  }
+  if (key === 'workModel') {
+    const map: Record<string, string> = { partnership: 'Ortaklık', salary: 'Maaşlı', equity: 'Hisse', hybrid: 'Karma', freelance: 'Freelance', volunteer: 'Gönüllü' }
+    return map[value] ?? value || '-'
+  }
+  return value || '-'
 }
 
 export function ProfileContent() {
@@ -188,20 +224,22 @@ export function ProfileContent() {
               <CardContent>
                 {profile ? (
                   <div className="space-y-3">
-                    {Object.entries((profile?.data as Record<string, string>) ?? {}).map(([key, value]: [string, string]) => (
-                      <div key={key}>
-                        <p className="text-xs text-muted-foreground">{PROFILE_FIELD_LABELS[key] ?? key}</p>
-                        {editing ? (
-                          <Input
-                            value={formData?.[key] ?? ''}
-                            onChange={(e) => setFormData((prev) => ({ ...(prev ?? {}), [key]: e.target.value }))}
-                            className="mt-1"
-                          />
-                        ) : (
-                          <p className="text-sm font-medium">{value || '-'}</p>
-                        )}
-                      </div>
-                    ))}
+                    {Object.entries((profile?.data as Record<string, string>) ?? {})
+                      .filter(([key]) => key !== 'capitalCurrency' && key !== 'budgetCurrency')
+                      .map(([key, value]: [string, string]) => (
+                        <div key={key}>
+                          <p className="text-xs text-muted-foreground">{PROFILE_FIELD_LABELS[key] ?? key}</p>
+                          {editing ? (
+                            <Input
+                              value={formData?.[key] ?? ''}
+                              onChange={(e) => setFormData((prev) => ({ ...(prev ?? {}), [key]: e.target.value }))}
+                              className="mt-1"
+                            />
+                          ) : (
+                            <p className="text-sm font-medium">{formatValue(key, value, (profile?.data as Record<string, string>) ?? {})}</p>
+                          )}
+                        </div>
+                      ))}
                   </div>
                 ) : (
                   <div className="text-center py-6">

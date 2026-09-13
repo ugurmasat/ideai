@@ -24,6 +24,18 @@ const SUB_ROLES = [
   { value: 'manufacturer', label: 'Üretici', icon: <Wrench className="h-4 w-4" /> },
 ]
 
+const STAGE_OPTIONS = [
+  { value: 'idea', label: 'Fikir Aşaması' },
+  { value: 'mvp', label: 'MVP (Ürün Geliştiriliyor)' },
+  { value: 'early_revenue', label: 'İlk Gelir Elde Ediyor' },
+]
+
+const CURRENCY_OPTIONS = [
+  { value: 'TRY', label: 'TL (₺)', symbol: '₺' },
+  { value: 'USD', label: 'USD ($)', symbol: '$' },
+  { value: 'EUR', label: 'EUR (€)', symbol: '€' },
+]
+
 export function OnboardingContent() {
   const { data: session, status } = useSession()
   const router = useRouter()
@@ -137,26 +149,51 @@ export function OnboardingContent() {
                       <Label>Kısa Açıklama *</Label>
                       <Textarea placeholder="Projenizi kısaca açıklayın" value={formData?.description ?? ''} onChange={(e) => updateField('description', e.target.value)} />
                     </div>
-                    <div className="space-y-2">
-                      <Label>Sektör</Label>
-                      <Select value={formData?.sector ?? ''} onValueChange={(v) => updateField('sector', v)}>
-                        <SelectTrigger><SelectValue placeholder="Seçiniz" /></SelectTrigger>
-                        <SelectContent>
-                          {['Teknoloji', 'Sağlık', 'Eğitim', 'Finans', 'E-ticaret', 'Tarım', 'Enerji', 'Lojistik', 'Medya', 'Diğer'].map((s) => (
-                            <SelectItem key={s} value={s}>{s}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label>Sektör</Label>
+                        <Select value={formData?.sector ?? ''} onValueChange={(v) => updateField('sector', v)}>
+                          <SelectTrigger><SelectValue placeholder="Seçiniz" /></SelectTrigger>
+                          <SelectContent>
+                            {['Teknoloji', 'Sağlık', 'Eğitim', 'Finans', 'E-ticaret', 'Tarım', 'Enerji', 'Lojistik', 'Medya', 'Diğer'].map((s) => (
+                              <SelectItem key={s} value={s}>{s}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                      <div className="space-y-2">
+                        <Label>Proje Aşaması</Label>
+                        <Select value={formData?.stage ?? ''} onValueChange={(v) => updateField('stage', v)}>
+                          <SelectTrigger><SelectValue placeholder="Seçiniz" /></SelectTrigger>
+                          <SelectContent>
+                            {STAGE_OPTIONS.map((s) => (
+                              <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <Label>İhtiyaç Duyulan Sermaye (₺)</Label>
+                        <Label>İhtiyaç Duyulan Sermaye</Label>
                         <Input type="number" placeholder="100.000" value={formData?.capital ?? ''} onChange={(e) => updateField('capital', e.target.value)} />
                       </div>
                       <div className="space-y-2">
-                        <Label>Haftalık Süre (saat)</Label>
-                        <Input type="number" placeholder="20" value={formData?.weeklyHours ?? ''} onChange={(e) => updateField('weeklyHours', e.target.value)} />
+                        <Label>Para Birimi</Label>
+                        <Select value={formData?.capitalCurrency ?? 'TRY'} onValueChange={(v) => updateField('capitalCurrency', v)}>
+                          <SelectTrigger><SelectValue placeholder="Seçiniz" /></SelectTrigger>
+                          <SelectContent>
+                            {CURRENCY_OPTIONS.map((c) => (
+                              <SelectItem key={c.value} value={c.value}>{c.label}</SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
                       </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Haftalık Süre (saat)</Label>
+                      <p className="text-xs text-muted-foreground">Projeye ayırabileceğiniz haftalık çalışma saati.</p>
+                      <Input type="number" placeholder="20" value={formData?.weeklyHours ?? ''} onChange={(e) => updateField('weeklyHours', e.target.value)} />
                     </div>
                   </>
                 )}
