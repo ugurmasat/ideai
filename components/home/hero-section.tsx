@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { FadeIn, SlideIn } from '@/components/ui/animate'
 import { ArrowRight, Sparkles } from 'lucide-react'
@@ -45,6 +46,13 @@ function AnimatedCounter({ target, suffix = '' }: { target: number; suffix?: str
 export function HeroSection() {
   return (
     <section className="relative overflow-hidden hero-gradient">
+      <Image
+        src="/logo.png"
+        alt=""
+        fill
+        priority
+        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.06] dark:opacity-[0.10] object-contain saturate-0"
+      />
       <div className="mx-auto max-w-[1200px] px-4 py-20 md:py-32">
         <div className="flex flex-col items-center text-center">
           <FadeIn>
