@@ -222,6 +222,7 @@ async function main() {
     const title = pick(ideaTemplates[sector] || ideaTemplates['Teknoloji'], seed * 7)
     const email = `bot-idea-${String(i + 1).padStart(3, '0')}@demo.ideai.com`
     const phone = `555100${String(i + 1).padStart(4, '0')}`
+    const description = `${title}, ${sector} alanında yenilikçi ve ölçeklenebilir bir girişim fikridir. Hedef kitleye ulaşmak ve güçlü bir ekip kurmak için destek arıyor.`
 
     const user = await prisma.user.upsert({
       where: { email },
