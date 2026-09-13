@@ -68,16 +68,16 @@ function formatCurrency(value: string, currency: string) {
 }
 
 function formatValue(key: string, value: string, data: Record<string, string>) {
-  if (key === 'stage') return STAGE_LABELS[value] ?? value || '-'
+  if (key === 'stage') return (STAGE_LABELS[value] ?? value) || '-'
   if (key === 'capital') return formatCurrency(value, data?.capitalCurrency ?? 'TRY')
   if (key === 'budget') return formatCurrency(value, data?.budgetCurrency ?? 'TRY')
   if (key === 'riskLevel') {
     const map: Record<string, string> = { low: 'Düşük Risk', medium: 'Orta Risk', high: 'Yüksek Risk' }
-    return map[value] ?? value || '-'
+    return (map[value] ?? value) || '-'
   }
   if (key === 'workModel') {
     const map: Record<string, string> = { partnership: 'Ortaklık', salary: 'Maaşlı', equity: 'Hisse', hybrid: 'Karma', freelance: 'Freelance', volunteer: 'Gönüllü' }
-    return map[value] ?? value || '-'
+    return (map[value] ?? value) || '-'
   }
   return value || '-'
 }

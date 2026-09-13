@@ -1,0 +1,6 @@
+Indexing...
+Uploading...
+  Build Logs: https://railway.com/project/837822ee-3306-425e-a373-683dbf449909/service/acb832c8-ac19-4766-b55d-af4374635d02?id=00247832-d7cf-4609-bc32-dc1719e371ca&
+warning: Config as Code (railway.json / railway.toml) is deprecated. Prefer Infrastructure as Code (.railway/railway.ts). Run `railway config migrate` or see https://docs.railway.com/infrastructure-as-code#migrating-from-config-as-code
+  → Migrate: `railway config migrate` — https://docs.railway.com/infrastructure-as-code#migrating-from-config-as-code
+  Existing files keep working until 2026-12-01.
