@@ -149,6 +149,11 @@ export function OnboardingContent() {
                       <Label>Kısa Açıklama *</Label>
                       <Textarea placeholder="Projenizi kısaca açıklayın" value={formData?.description ?? ''} onChange={(e) => updateField('description', e.target.value)} />
                     </div>
+                    <div className="space-y-2">
+                      <Label>Fikir Sahibi Biyografi</Label>
+                      <p className="text-xs text-muted-foreground">Kendinizi ve girişimci geçmişinizi kısaca tanıtın.</p>
+                      <Textarea placeholder="Örn: 5 yıllık yazılım deneyimim var, çevre teknolojilerine ilgi duyuyorum." value={formData?.bio ?? ''} onChange={(e) => updateField('bio', e.target.value)} />
+                    </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label>Sektör</Label>
@@ -206,6 +211,16 @@ export function OnboardingContent() {
                       <Input type="number" placeholder="500.000" value={formData?.budget ?? ''} onChange={(e) => updateField('budget', e.target.value)} />
                     </div>
                     <div className="space-y-2">
+                      <Label>Yatırım Yapmak İstediğiniz Alanlar *</Label>
+                      <p className="text-xs text-muted-foreground">Hangi sektör veya alanlara yatırım yapmak istediğinizi belirtin.</p>
+                      <Textarea placeholder="Örn: Temiz teknolojiler, SaaS, sağlık teknolojileri" value={formData?.investmentAreas ?? ''} onChange={(e) => updateField('investmentAreas', e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Yatırımcı Biyografi</Label>
+                      <p className="text-xs text-muted-foreground">Yatırım tecrübenizi ve odaklandığınız alanları kısaca anlatın.</p>
+                      <Textarea placeholder="Örn: 10 yıllık girişim sermayesi deneyimim var, erken aşama girişimlere ilgi duyuyorum." value={formData?.bio ?? ''} onChange={(e) => updateField('bio', e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
                       <Label>İlgi Alanları</Label>
                       <Input placeholder="Teknoloji, Sağlık, Finans" value={formData?.interests ?? ''} onChange={(e) => updateField('interests', e.target.value)} />
                     </div>
@@ -239,6 +254,16 @@ export function OnboardingContent() {
                     <div className="space-y-2">
                       <Label>Uzmanlık Detayı *</Label>
                       <Input placeholder="Örn: React, Node.js, Mobil Uygulama" value={formData?.expertise ?? ''} onChange={(e) => updateField('expertise', e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Hünerler ve Yetenekler *</Label>
+                      <p className="text-xs text-muted-foreground">Hangi konularda destek verebileceğinizi açıkça yazın.</p>
+                      <Textarea placeholder="Örn: UI/UX tasarım, marka stratejisi, frontend geliştirme, kullanıcı araştırması" value={formData?.skills ?? ''} onChange={(e) => updateField('skills', e.target.value)} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Destek Ekibi Biyografi</Label>
+                      <p className="text-xs text-muted-foreground">Kendinizi ve nasıl katkı sağlayabileceğinizi kısaca anlatın.</p>
+                      <Textarea placeholder="Örn: 8 yıllık ürün tasarımı deneyimimle girişimlere kullanıcı odaklı çözümler sunuyorum." value={formData?.bio ?? ''} onChange={(e) => updateField('bio', e.target.value)} />
                     </div>
                     <div className="space-y-2">
                       <Label>Çalışma Modeli</Label>

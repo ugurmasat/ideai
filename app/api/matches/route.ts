@@ -20,20 +20,46 @@ export async function GET() {
         ],
       },
       include: {
-        userA: { select: { id: true, name: true, email: true, userType: true } },
-        userB: { select: { id: true, name: true, email: true, userType: true } },
+        userA: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            userType: true,
+            profile: { select: { data: true, subRole: true } },
+          },
+        },
+        userB: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            userType: true,
+            profile: { select: { data: true, subRole: true } },
+          },
+        },
       },
       orderBy: { score: 'desc' },
     })
 
     const formatted = (matches ?? []).map((m: any) => {
-      const otherUser = m?.userAId === userId ? m?.userB : m?.userA
+      const isUserA = m?.userAId === userId
+      const otherUser = isUserA ? m?.userB : m?.userA
+      const profileData = (otherUser?.profile?.data as Record<string, any>) ?? {}
       return {
         id: m?.id,
         score: m?.score,
         status: m?.status,
         createdAt: m?.createdAt,
-        matchedUser: otherUser,
+        initiatedByMe: isUserA,
+        matchedUser: {
+          id: otherUser?.id,
+          name: otherUser?.name,
+          email: otherUser?.email,
+          userType: otherUser?.userType,
+          subRole: otherUser?.profile?.subRole ?? null,
+          profile: profileData,
+        },
       }
     })
 

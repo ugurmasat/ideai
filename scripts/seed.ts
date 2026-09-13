@@ -238,12 +238,26 @@ async function main() {
 
     await prisma.profile.upsert({
       where: { userId: user.id },
-      update: {},
+      update: {
+        data: {
+          title,
+          description,
+          bio: `${first} ${last}, ${sector} sektöründe yenilikçi bir girişim fikri ile ilgileniyor ve doğru ortakları arıyor.`,
+          sector,
+          stage: ['idea', 'mvp', 'early_revenue'][Math.floor(seededRandom(seed * 17) * 3)],
+          capital: String([250000, 500000, 750000, 1000000, 1500000][Math.floor(seededRandom(seed * 11) * 5)]),
+          capitalCurrency: 'TRY',
+          weeklyHours: String([20, 30, 40, 50][Math.floor(seededRandom(seed * 13) * 4)]),
+          country: 'Türkiye',
+          city: ['İstanbul', 'Ankara', 'İzmir', 'Bursa', 'Antalya'][Math.floor(seededRandom(seed * 19) * 5)],
+        },
+      },
       create: {
         userId: user.id,
         data: {
           title,
-          description: `${title}, ${sector} alanında yenilikçi ve ölçeklenebilir bir girişim fikridir. Hedef kitleye ulaşmak ve güçlü bir ekip kurmak için destek arıyor.`,
+          description,
+          bio: `${first} ${last}, ${sector} sektöründe yenilikçi bir girişim fikri ile ilgileniyor ve doğru ortakları arıyor.`,
           sector,
           stage: ['idea', 'mvp', 'early_revenue'][Math.floor(seededRandom(seed * 17) * 3)],
           capital: String([250000, 500000, 750000, 1000000, 1500000][Math.floor(seededRandom(seed * 11) * 5)]),
@@ -287,11 +301,26 @@ async function main() {
 
     await prisma.profile.upsert({
       where: { userId: user.id },
-      update: {},
+      update: {
+        data: {
+          budget: String([500000, 1000000, 2500000, 5000000, 10000000][Math.floor(seededRandom(seed * 31) * 5)]),
+          budgetCurrency: 'TRY',
+          investmentAreas: interests.join(', '),
+          bio: `${first} ${last}, ${interests.join(', ')} alanlarında erken aşama girişimlere yatırım yapmak isteyen bir yatırımcı.`,
+          interests: interests.join(', '),
+          riskLevel: ['low', 'medium', 'high'][Math.floor(seededRandom(seed * 37) * 3)],
+          country: 'Türkiye',
+          city: ['İstanbul', 'Ankara', 'İzmir', 'Bursa', 'Antalya'][Math.floor(seededRandom(seed * 41) * 5)],
+          investorType: ['angel', 'vc', 'corporate', 'crowdfunding'][Math.floor(seededRandom(seed * 43) * 4)],
+        },
+      },
       create: {
         userId: user.id,
         data: {
           budget: String([500000, 1000000, 2500000, 5000000, 10000000][Math.floor(seededRandom(seed * 31) * 5)]),
+          budgetCurrency: 'TRY',
+          investmentAreas: interests.join(', '),
+          bio: `${first} ${last}, ${interests.join(', ')} alanlarında erken aşama girişimlere yatırım yapmak isteyen bir yatırımcı.`,
           interests: interests.join(', '),
           riskLevel: ['low', 'medium', 'high'][Math.floor(seededRandom(seed * 37) * 3)],
           country: 'Türkiye',
@@ -335,12 +364,25 @@ async function main() {
 
     await prisma.profile.upsert({
       where: { userId: user.id },
-      update: {},
+      update: {
+        data: {
+          expertise: expertise.join(', '),
+          skills: expertise.join(', '),
+          bio: `${first} ${last}, ${expertise.join(', ')} konularında girişimlere destek veren bir ${subRole}.`,
+          workModel: ['equity', 'partnership', 'freelance', 'volunteer'][Math.floor(seededRandom(seed * 59) * 4)],
+          weeklyHours: String([5, 10, 15, 20, 25, 30][Math.floor(seededRandom(seed * 61) * 6)]),
+          experience: String([1, 2, 3, 5, 7, 10, 15][Math.floor(seededRandom(seed * 67) * 7)]),
+          country: 'Türkiye',
+          city: ['İstanbul', 'Ankara', 'İzmir', 'Bursa', 'Antalya'][Math.floor(seededRandom(seed * 71) * 5)],
+        },
+      },
       create: {
         userId: user.id,
         subRole,
         data: {
           expertise: expertise.join(', '),
+          skills: expertise.join(', '),
+          bio: `${first} ${last}, ${expertise.join(', ')} konularında girişimlere destek veren bir ${subRole}.`,
           workModel: ['equity', 'partnership', 'freelance', 'volunteer'][Math.floor(seededRandom(seed * 59) * 4)],
           weeklyHours: String([5, 10, 15, 20, 25, 30][Math.floor(seededRandom(seed * 61) * 6)]),
           experience: String([1, 2, 3, 5, 7, 10, 15][Math.floor(seededRandom(seed * 67) * 7)]),

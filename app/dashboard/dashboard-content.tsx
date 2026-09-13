@@ -6,13 +6,14 @@ import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { MatchCard } from '@/components/match-card'
 import { Container } from '@/components/layouts/container'
 import { Section } from '@/components/layouts/section'
 import { PageHeader } from '@/components/layouts/page-header'
 import { FadeIn, Stagger, StaggerItem } from '@/components/ui/animate'
 import { toast } from 'sonner'
-import { User, Briefcase, TrendingUp, Code2, Sparkles, Bell, CheckCircle2 } from 'lucide-react'
+import { User, Briefcase, TrendingUp, Code2, Sparkles, Bell, CheckCircle2, MessageSquare, XCircle, Search } from 'lucide-react'
 import Link from 'next/link'
 
 const USER_TYPE_LABELS: Record<string, string> = {
@@ -32,11 +33,14 @@ interface MatchItem {
   score: number
   status: string
   createdAt: string
+  initiatedByMe: boolean
   matchedUser: {
     id: string
     name: string
     email: string
     userType: string
+    subRole?: string | null
+    profile?: Record<string, any>
   }
 }
 
@@ -85,12 +89,49 @@ export function DashboardContent() {
         setMatches((prev) =>
           (prev ?? []).map((m: MatchItem) => (m?.id === matchId ? { ...(m ?? {}), status: action } : m) as MatchItem)
         )
-        toast.success(action === 'accepted' ? 'Görüşme talebi gönderildi!' : 'Eşleşme reddedildi.')
+        const messages: Record<string, string> = {
+          requested: 'Görüşme talebi gönderildi.',
+          accepted: 'Eşleşme kabul edildi.',
+          rejected: 'Eşleşme reddedildi.',
+        }
+        toast.success(messages[action] ?? 'Durum güncellendi.')
       }
     } catch {
       toast.error('Bir hata oluştu.')
     }
   }
+
+  const filterMatches = (status: string) => (matches ?? []).filter((m) => m?.status === status)
+
+  const renderMatchGrid = (items: MatchItem[]) => (
+    <Stagger className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3" staggerDelay={0.1}>
+      {items.map((m: MatchItem) => (
+        <StaggerItem key={m?.id}>
+          <MatchCard
+            name={m?.matchedUser?.name ?? 'Kullanıcı'}
+            userType={m?.matchedUser?.userType ?? ''}
+            score={m?.score ?? 0}
+            status={m?.status ?? 'pending'}
+            subRole={m?.matchedUser?.subRole}
+            profile={m?.matchedUser?.profile}
+            onAction={(action) => handleMatchAction(m?.id, action)}
+          />
+        </StaggerItem>
+      ))}
+    </Stagger>
+  )
+
+  const renderEmpty = (title: string, description: string) => (
+    <FadeIn delay={0.2}>
+      <Card className="mt-4">
+        <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+          <Search className="h-10 w-10 text-muted-foreground mb-3" />
+          <p className="font-semibold">{title}</p>
+          <p className="text-sm text-muted-foreground mt-1">{description}</p>
+        </CardContent>
+      </Card>
+    </FadeIn>
+  )
 
   if (status === 'loading') {
     return (
@@ -196,32 +237,60 @@ export function DashboardContent() {
           <div className="flex justify-center py-12">
             <div className="h-6 w-6 animate-spin rounded-full border-4 border-primary border-t-transparent" />
           </div>
-        ) : (matches?.length ?? 0) > 0 ? (
-          <Stagger className="mt-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3" staggerDelay={0.1}>
-            {(matches ?? []).map((m: MatchItem) => (
-              <StaggerItem key={m?.id}>
-                <MatchCard
-                  name={m?.matchedUser?.name ?? 'Kullanıcı'}
-                  userType={m?.matchedUser?.userType ?? ''}
-                  score={m?.score ?? 0}
-                  status={m?.status ?? 'pending'}
-                  onAction={(action) => handleMatchAction(m?.id, action)}
-                />
-              </StaggerItem>
-            ))}
-          </Stagger>
         ) : (
-          <FadeIn delay={0.4}>
-            <Card className="mt-4">
-              <CardContent className="flex flex-col items-center justify-center py-12 text-center">
-                <Sparkles className="h-10 w-10 text-muted-foreground mb-3" />
-                <p className="font-semibold">Henüz eşleşme yok</p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Profilinizi tamamladıktan sonra AI size uygun kişileri önerecek.
-                </p>
-              </CardContent>
-            </Card>
-          </FadeIn>
+          <Tabs defaultValue="pending" className="mt-4">
+            <TabsList className="grid w-full grid-cols-4 md:w-auto">
+              <TabsTrigger value="pending" className="gap-1.5">
+                <Search className="h-4 w-4 hidden sm:inline" />
+                Keşfet
+                {filterMatches('pending').length > 0 && (
+                  <Badge variant="secondary" className="ml-1 h-5 px-1.5">{filterMatches('pending').length}</Badge>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="requested" className="gap-1.5">
+                <MessageSquare className="h-4 w-4 hidden sm:inline" />
+                Taleplerim
+                {filterMatches('requested').length > 0 && (
+                  <Badge variant="secondary" className="ml-1 h-5 px-1.5">{filterMatches('requested').length}</Badge>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="accepted" className="gap-1.5">
+                <CheckCircle2 className="h-4 w-4 hidden sm:inline" />
+                Kabul Edilenler
+                {filterMatches('accepted').length > 0 && (
+                  <Badge variant="secondary" className="ml-1 h-5 px-1.5">{filterMatches('accepted').length}</Badge>
+                )}
+              </TabsTrigger>
+              <TabsTrigger value="rejected" className="gap-1.5">
+                <XCircle className="h-4 w-4 hidden sm:inline" />
+                Reddedilenler
+                {filterMatches('rejected').length > 0 && (
+                  <Badge variant="secondary" className="ml-1 h-5 px-1.5">{filterMatches('rejected').length}</Badge>
+                )}
+              </TabsTrigger>
+            </TabsList>
+
+            <TabsContent value="pending">
+              {filterMatches('pending').length > 0
+                ? renderMatchGrid(filterMatches('pending'))
+                : renderEmpty('Keşfedilecek eşleşme yok', 'Profilinizi tamamladıktan sonra size uygun kişiler burada listelenecek.')}
+            </TabsContent>
+            <TabsContent value="requested">
+              {filterMatches('requested').length > 0
+                ? renderMatchGrid(filterMatches('requested'))
+                : renderEmpty('Bekleyen görüşme talebi yok', 'Görüşme talebi gönderdiğiniz kişiler burada görünecek.')}
+            </TabsContent>
+            <TabsContent value="accepted">
+              {filterMatches('accepted').length > 0
+                ? renderMatchGrid(filterMatches('accepted'))
+                : renderEmpty('Kabul edilen eşleşme yok', 'Kabul ettiğiniz eşleşmeler burada görünecek.')}
+            </TabsContent>
+            <TabsContent value="rejected">
+              {filterMatches('rejected').length > 0
+                ? renderMatchGrid(filterMatches('rejected'))
+                : renderEmpty('Reddedilen eşleşme yok', 'Reddettiğiniz kişiler burada listelenecek.')}
+            </TabsContent>
+          </Tabs>
         )}
       </Container>
     </Section>
